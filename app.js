@@ -39,10 +39,12 @@ app.get("/blogs", function(req, res){
     })
 });
 
+
 // New Route
 app.get("/blogs/new", function(req, res){
     res.render("new");
 });
+
 
 // Create Route
 app.post("/blogs", function(req, res){
@@ -58,6 +60,20 @@ app.post("/blogs", function(req, res){
         }
     });
 });
+
+
+// Show Route
+app.get("/blogs/:id", function(req, res) {
+    Blog.findById(req.params.id, function(err, foundBlog) {
+        if(err) {
+            res.redirect("/blogs");
+        } else {
+            res.render("show", {blog: foundBlog});
+        }
+    });
+});
+
+
 
 app.listen(3000, function(){
     console.log("The Server Has Started on Port 3000");
