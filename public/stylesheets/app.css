@@ -2,10 +2,17 @@ i.icon {
     font-size: 1.5em;
 }
 
+body {
+    background: #DA22FF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #9733EE, #DA22FF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #9733EE, #DA22FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+}
+
 .container.main {
-    margin-top: 7.0em;
+    margin: 7.0em auto;
 }
 
 #delete {
     display: inline;
 }
+

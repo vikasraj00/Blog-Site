@@ -1,13 +1,15 @@
-var methodOverride = require("method-override"),
-    bodyParser     = require("body-parser");
-    mongoose       = require("mongoose");
-    express        = require("express");
-    app            = express();
+var expressSanitizer = require("express-sanitizer");
+    methodOverride   = require("method-override"),
+    bodyParser       = require("body-parser");
+    mongoose         = require("mongoose");
+    express          = require("express");
+    app              = express();
 
 
 // App Config
 mongoose.connect("mongodb://localhost:27017/blogApp",{ useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
 mongoose.set('useFindAndModify', false);
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
@@ -51,6 +53,8 @@ app.get("/blogs/new", function(req, res){
 
 // Create Route
 app.post("/blogs", function(req, res){
+    // Sanitize Body Input
+    req.body.blog.body = req.sanitize(req.body.blog.body);
     // Create Blog
     Blog.create(req.body.blog, function(err, newBlog){
         if(err){
@@ -91,6 +95,8 @@ app.get("/blogs/:id/edit", function(req, res) {
 
 // Update Route
 app.put("/blogs/:id", function(req, res) {
+    // Sanitize Body Input
+    req.body.blog.body = req.sanitize(req.body.blog.body);
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
         if(err) {
             res.redirect("/blogs");
